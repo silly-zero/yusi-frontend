@@ -1,4 +1,5 @@
-import { create } from 'zustand'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export type RoomStatus = 'WAITING' | 'IN_PROGRESS' | 'COMPLETED'
 
@@ -10,40 +11,37 @@ export interface Room {
   submissions: Record<string, string>
 }
 
-export interface RoomStore {
-  rooms: Record<string, Room>
-  setRoom: (code: string, room: Room) => void
-  setStatus: (code: string, status: RoomStatus) => void
-  addMember: (code: string, userId: string) => void
-  addSubmission: (code: string, userId: string, narrative: string) => void
-}
+export const useRoomStore = defineStore('room', () => {
+  const rooms = ref<Record<string, Room>>({})
 
-export const useRoomStore = create<RoomStore>((set) => ({
-  rooms: {},
-  setRoom: (code, room) =>
-    set((s) => ({ rooms: { ...s.rooms, [code]: room } })),
-  setStatus: (code, status) =>
-    set((s) => ({
-      rooms: { ...s.rooms, [code]: { ...s.rooms[code], status } },
-    })),
-  addMember: (code, userId) =>
-    set((s) => ({
-      rooms: {
-        ...s.rooms,
-        [code]: {
-          ...s.rooms[code],
-          members: Array.from(new Set([...s.rooms[code].members, userId])),
-        },
-      },
-    })),
-  addSubmission: (code, userId, narrative) =>
-    set((s) => ({
-      rooms: {
-        ...s.rooms,
-        [code]: {
-          ...s.rooms[code],
-          submissions: { ...s.rooms[code].submissions, [userId]: narrative },
-        },
-      },
-    })),
-}))
+  const setRoom = (code: string, room: Room) => {
+    rooms.value[code] = room
+  }
+
+  const setStatus = (code: string, status: RoomStatus) => {
+    if (rooms.value[code]) {
+      rooms.value[code].status = status
+    }
+  }
+
+  const addMember = (code: string, userId: string) => {
+    if (rooms.value[code]) {
+      const existingMembers = rooms.value[code].members
+      rooms.value[code].members = Array.from(new Set([...existingMembers, userId]))
+    }
+  }
+
+  const addSubmission = (code: string, userId: string, narrative: string) => {
+    if (rooms.value[code]) {
+      rooms.value[code].submissions[userId] = narrative
+    }
+  }
+
+  return {
+    rooms,
+    setRoom,
+    setStatus,
+    addMember,
+    addSubmission
+  }
+})
