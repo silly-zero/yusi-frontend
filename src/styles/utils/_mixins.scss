@@ -1,0 +1,108 @@
+@use './variables' as *;
+
+// 响应式断点混合宏
+@mixin sm {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}
+
+// Flexbox 居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 按钮基础样式
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: $radius-full;
+  font-weight: 500;
+  transition: $transition-base;
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid $ring;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+// 输入框基础样式
+@mixin input-base {
+  display: flex;
+  width: 100%;
+  border-radius: $radius-md;
+  border: 1px solid $input;
+  background-color: $background;
+  padding: $spacing-sm $spacing-md;
+  font-size: $text-sm;
+  transition: $transition-base;
+
+  &::placeholder {
+    color: $muted-foreground;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: $ring;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ring) 20%, transparent);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// 卡片基础样式
+@mixin card-base {
+  border-radius: $radius-lg;
+  border: 1px solid $border;
+  background-color: $card;
+  color: $card-foreground;
+  box-shadow: $shadow-sm;
+}
+
+// 文本截断
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本截断
+@mixin text-truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

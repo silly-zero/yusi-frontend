@@ -1,17 +1,17 @@
 <template>
   <Layout>
-    <div class="flex items-center justify-center min-h-[60vh]">
-      <Card class="w-full max-w-md mx-4">
-        <CardHeader class="space-y-1">
-          <CardTitle class="text-2xl font-bold text-center">创建账号</CardTitle>
-          <CardDescription class="text-center">
+    <div class="register-page">
+      <Card class="register-page__card">
+        <CardHeader class="register-page__header">
+          <CardTitle class="register-page__title">创建账号</CardTitle>
+          <CardDescription class="register-page__description">
             开启你的 Yusi 之旅
           </CardDescription>
         </CardHeader>
         <form @submit.prevent="handleSubmit">
-          <CardContent class="space-y-4">
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none" for="username">
+          <CardContent class="register-page__content">
+            <div class="register-page__field">
+              <label class="register-page__label" for="username">
                 用户名
               </label>
               <Input
@@ -21,8 +21,8 @@
                 :disabled="loading"
               />
             </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none" for="email">
+            <div class="register-page__field">
+              <label class="register-page__label" for="email">
                 邮箱 (可选)
               </label>
               <Input
@@ -33,8 +33,8 @@
                 :disabled="loading"
               />
             </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none" for="password">
+            <div class="register-page__field">
+              <label class="register-page__label" for="password">
                 密码
               </label>
               <Input
@@ -45,8 +45,8 @@
                 :disabled="loading"
               />
             </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none" for="confirmPassword">
+            <div class="register-page__field">
+              <label class="register-page__label" for="confirmPassword">
                 确认密码
               </label>
               <Input
@@ -58,13 +58,13 @@
               />
             </div>
           </CardContent>
-          <CardFooter class="flex flex-col gap-4">
-            <Button class="w-full" type="submit" :is-loading="loading">
+          <CardFooter class="register-page__footer">
+            <Button class="register-page__submit-btn" type="submit" :is-loading="loading">
               注册
             </Button>
-            <div class="text-sm text-center text-muted-foreground">
+            <div class="register-page__login-hint">
               已有账号？
-              <RouterLink to="/login" class="text-primary hover:underline">
+              <RouterLink to="/login" class="register-page__login-link">
                 立即登录
               </RouterLink>
             </div>
@@ -120,3 +120,79 @@ const handleSubmit = async () => {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+
+  &__card {
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 $spacing-md;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    font-size: $text-2xl;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__description {
+    text-align: center;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__submit-btn {
+    width: 100%;
+  }
+
+  &__login-hint {
+    font-size: $text-sm;
+    text-align: center;
+    color: $muted-foreground;
+  }
+
+  &__login-link {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+</style>

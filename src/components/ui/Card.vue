@@ -1,9 +1,17 @@
 <template>
-  <div :class="cn('rounded-xl border bg-card text-card-foreground shadow-sm', $attrs.class)">
+  <div class="card">
     <slot />
   </div>
 </template>
 
-<script setup lang="ts">
-import { cn } from '@/utils'
-</script>
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.card {
+  border-radius: $radius-xl;
+  border: 1px solid $border;
+  background-color: $card;
+  color: $card-foreground;
+  box-shadow: $shadow-sm;
+}
+</style>

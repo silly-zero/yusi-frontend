@@ -1,31 +1,68 @@
 <template>
-  <div :class="badgeClass">
+  <div class="badge" :class="`badge--${variant}`">
     <slot />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { cn } from '@/utils'
-
 interface Props {
   variant?: 'default' | 'secondary' | 'destructive' | 'outline'
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   variant: 'default'
 })
+</script>
 
-const badgeClass = computed(() => {
-  const base = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
 
-  const variants = {
-    default: 'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
-    secondary: 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-    destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
-    outline: 'text-foreground',
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: $radius-full;
+  border: 1px solid transparent;
+  padding: 0.125rem 0.625rem;
+  font-size: $text-xs;
+  font-weight: 600;
+  transition: $transition-base;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px $ring, 0 0 0 4px color-mix(in srgb, var(--ring) 20%, transparent);
   }
 
-  return cn(base, variants[props.variant])
-})
-</script>
+  &--default {
+    background-color: $primary;
+    color: $primary-foreground;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--primary) 80%, transparent);
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary;
+    color: $secondary-foreground;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+    }
+  }
+
+  &--destructive {
+    background-color: $destructive;
+    color: $destructive-foreground;
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--destructive) 80%, transparent);
+    }
+  }
+
+  &--outline {
+    border-color: $border;
+    color: $foreground;
+    background-color: transparent;
+  }
+}
+</style>

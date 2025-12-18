@@ -1,9 +1,14 @@
 <template>
-  <p :class="cn('text-sm text-muted-foreground', $attrs.class)">
+  <p class="card-description">
     <slot />
   </p>
 </template>
 
-<script setup lang="ts">
-import { cn } from '@/utils'
-</script>
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.card-description {
+  font-size: $text-sm;
+  color: $muted-foreground;
+}
+</style>

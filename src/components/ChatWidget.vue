@@ -1,73 +1,73 @@
 <template>
-  <Card class="flex flex-col h-[600px] max-w-2xl mx-auto">
-    <CardHeader class="border-b">
+  <Card class="chat-widget">
+    <CardHeader class="chat-widget__header">
       <CardTitle>AI 助手</CardTitle>
       <CardDescription>和 Yusi AI 聊聊你的想法</CardDescription>
     </CardHeader>
 
-    <CardContent class="flex-1 overflow-y-auto p-4 space-y-4" ref="messagesContainer">
-      <div v-if="messages.length === 0" class="flex items-center justify-center h-full text-muted-foreground">
+    <CardContent class="chat-widget__content" ref="messagesContainer">
+      <div v-if="messages.length === 0" class="chat-widget__empty">
         <p>开始对话吧...</p>
       </div>
 
       <div
         v-for="(message, index) in messages"
         :key="index"
-        :class="[
-          'flex gap-3',
-          message.role === 'user' ? 'justify-end' : 'justify-start'
-        ]"
+        class="chat-widget__message"
+        :class="{
+          'chat-widget__message--user': message.role === 'user',
+          'chat-widget__message--assistant': message.role === 'assistant'
+        }"
       >
         <div
           v-if="message.role === 'assistant'"
-          class="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"
+          class="chat-widget__avatar chat-widget__avatar--assistant"
         >
-          <Bot class="w-5 h-5 text-primary" />
+          <Bot class="chat-widget__avatar-icon" />
         </div>
 
         <div
-          :class="[
-            'max-w-[80%] rounded-lg px-4 py-2',
-            message.role === 'user'
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-muted'
-          ]"
+          class="chat-widget__bubble"
+          :class="{
+            'chat-widget__bubble--user': message.role === 'user',
+            'chat-widget__bubble--assistant': message.role === 'assistant'
+          }"
         >
-          <p class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
-          <span class="text-xs opacity-70 mt-1 block">
+          <p class="chat-widget__bubble-text">{{ message.content }}</p>
+          <span class="chat-widget__bubble-time">
             {{ formatTime(message.timestamp) }}
           </span>
         </div>
 
         <div
           v-if="message.role === 'user'"
-          class="flex-shrink-0 w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center"
+          class="chat-widget__avatar chat-widget__avatar--user"
         >
-          <User class="w-5 h-5 text-secondary-foreground" />
+          <User class="chat-widget__avatar-icon" />
         </div>
       </div>
 
-      <div v-if="isLoading" class="flex gap-3">
-        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-          <Bot class="w-5 h-5 text-primary" />
+      <div v-if="isLoading" class="chat-widget__message chat-widget__message--assistant">
+        <div class="chat-widget__avatar chat-widget__avatar--assistant">
+          <Bot class="chat-widget__avatar-icon" />
         </div>
-        <div class="bg-muted rounded-lg px-4 py-2">
-          <div class="flex gap-1">
-            <div class="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
-            <div class="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
-            <div class="w-2 h-2 bg-primary/60 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+        <div class="chat-widget__bubble chat-widget__bubble--assistant">
+          <div class="chat-widget__loading">
+            <div class="chat-widget__loading-dot" style="animation-delay: 0ms"></div>
+            <div class="chat-widget__loading-dot" style="animation-delay: 150ms"></div>
+            <div class="chat-widget__loading-dot" style="animation-delay: 300ms"></div>
           </div>
         </div>
       </div>
     </CardContent>
 
-    <CardFooter class="border-t p-4">
-      <form @submit.prevent="handleSendMessage" class="flex gap-2 w-full">
+    <CardFooter class="chat-widget__footer">
+      <form @submit.prevent="handleSendMessage" class="chat-widget__form">
         <Input
           v-model="inputMessage"
           placeholder="输入你的消息..."
           :disabled="isLoading"
-          class="flex-1"
+          class="chat-widget__input"
           @keydown.enter.prevent="handleSendMessage"
         />
         <Button
@@ -76,7 +76,7 @@
           :is-loading="isLoading"
           size="icon"
         >
-          <Send class="w-4 h-4" />
+          <Send class="chat-widget__send-icon" />
         </Button>
       </form>
     </CardFooter>
@@ -225,3 +225,142 @@ onMounted(() => {
   scrollToBottom()
 })
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.chat-widget {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  max-width: 48rem;
+  margin: 0 auto;
+
+  &__header {
+    border-bottom: 1px solid $border;
+  }
+
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: $muted-foreground;
+  }
+
+  &__message {
+    display: flex;
+    gap: 0.75rem;
+
+    &--user {
+      justify-content: flex-end;
+    }
+
+    &--assistant {
+      justify-content: flex-start;
+    }
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &--assistant {
+      background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+    }
+
+    &--user {
+      background-color: color-mix(in srgb, var(--secondary) 10%, transparent);
+    }
+  }
+
+  &__avatar-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: $primary;
+  }
+
+  &__bubble {
+    max-width: 80%;
+    border-radius: $radius-lg;
+    padding: 0.5rem $spacing-md;
+
+    &--user {
+      background-color: $primary;
+      color: $primary-foreground;
+    }
+
+    &--assistant {
+      background-color: $muted;
+    }
+  }
+
+  &__bubble-text {
+    font-size: $text-sm;
+    white-space: pre-wrap;
+  }
+
+  &__bubble-time {
+    font-size: $text-xs;
+    opacity: 0.7;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  &__loading {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  &__loading-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: color-mix(in srgb, var(--primary) 60%, transparent);
+    border-radius: $radius-full;
+    animation: bounce 1s infinite;
+  }
+
+  &__footer {
+    border-top: 1px solid $border;
+    padding: $spacing-md;
+  }
+
+  &__form {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  &__input {
+    flex: 1;
+  }
+
+  &__send-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+}
+</style>

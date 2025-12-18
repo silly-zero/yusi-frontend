@@ -1,35 +1,35 @@
 <template>
-  <Card class="h-full">
+  <Card class="room-create">
     <CardHeader>
       <CardTitle>创建情景室</CardTitle>
       <CardDescription>创建一个新的房间，邀请朋友一起探索。</CardDescription>
     </CardHeader>
-    <CardContent class="space-y-4">
-      <div class="space-y-2">
-        <label class="text-sm font-medium leading-none">你的用户ID</label>
+    <CardContent class="room-create__content">
+      <div class="room-create__field">
+        <label class="room-create__label">你的用户ID</label>
         <Input
           v-model="ownerId"
           placeholder="例如：alice"
           :disabled="loading"
         />
       </div>
-      <div class="space-y-2">
-        <div class="flex items-center justify-between">
-          <label class="text-sm font-medium leading-none">最大人数</label>
-          <span class="text-sm text-muted-foreground">{{ maxMembers }} 人</span>
+      <div class="room-create__field">
+        <div class="room-create__label-wrapper">
+          <label class="room-create__label">最大人数</label>
+          <span class="room-create__value">{{ maxMembers }} 人</span>
         </div>
         <input
           v-model.number="maxMembers"
           type="range"
           min="2"
           max="8"
-          class="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+          class="room-create__slider"
           :disabled="loading"
         />
       </div>
     </CardContent>
     <CardFooter>
-      <Button :is-loading="loading" @click="handleCreate" class="w-full">
+      <Button :is-loading="loading" @click="handleCreate" class="room-create__submit-btn">
         创建房间
       </Button>
     </CardFooter>
@@ -69,3 +69,72 @@ const handleCreate = async () => {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.room-create {
+  height: 100%;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__value {
+    font-size: $text-sm;
+    color: $muted-foreground;
+  }
+
+  &__slider {
+    width: 100%;
+    height: 0.5rem;
+    background-color: $secondary;
+    border-radius: $radius-lg;
+    appearance: none;
+    cursor: pointer;
+    accent-color: $primary;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 1rem;
+      height: 1rem;
+      border-radius: $radius-full;
+      background-color: $primary;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 1rem;
+      height: 1rem;
+      border-radius: $radius-full;
+      background-color: $primary;
+      cursor: pointer;
+      border: none;
+    }
+  }
+
+  &__submit-btn {
+    width: 100%;
+  }
+}
+</style>

@@ -1,9 +1,16 @@
 <template>
-  <div :class="cn('flex flex-col space-y-1.5 p-6', $attrs.class)">
+  <div class="card-header">
     <slot />
   </div>
 </template>
 
-<script setup lang="ts">
-import { cn } from '@/utils'
-</script>
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: $spacing-lg;
+}
+</style>

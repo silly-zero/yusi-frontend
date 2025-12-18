@@ -1,0 +1,17 @@
+// 工具类
+@use './utils/variables' as *;
+@use './utils/mixins' as *;
+
+// 基础样式
+@use './base/reset';
+
+// 组件样式将在此导入
+// @use './components/button';
+// @use './components/input';
+// @use './components/card';
+
+// 布局样式
+// @use './layouts/main';
+
+// 页面样式
+// @use './pages/home';

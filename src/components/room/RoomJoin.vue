@@ -1,12 +1,12 @@
 <template>
-  <Card class="h-full">
+  <Card class="room-join">
     <CardHeader>
       <CardTitle>加入情景室</CardTitle>
       <CardDescription>输入邀请码，加入朋友的房间。</CardDescription>
     </CardHeader>
-    <CardContent class="space-y-4">
-      <div class="space-y-2">
-        <label class="text-sm font-medium leading-none">邀请码（6位）</label>
+    <CardContent class="room-join__content">
+      <div class="room-join__field">
+        <label class="room-join__label">邀请码（6位）</label>
         <Input
           v-model="code"
           placeholder="ABC123"
@@ -15,8 +15,8 @@
           @input="handleCodeInput"
         />
       </div>
-      <div class="space-y-2">
-        <label class="text-sm font-medium leading-none">你的用户ID</label>
+      <div class="room-join__field">
+        <label class="room-join__label">你的用户ID</label>
         <Input
           v-model="userId"
           placeholder="例如：bob"
@@ -25,7 +25,7 @@
       </div>
     </CardContent>
     <CardFooter>
-      <Button :is-loading="loading" @click="handleJoin" class="w-full" variant="secondary">
+      <Button :is-loading="loading" @click="handleJoin" class="room-join__submit-btn" variant="secondary">
         加入房间
       </Button>
     </CardFooter>
@@ -70,3 +70,33 @@ const handleJoin = async () => {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.room-join {
+  height: 100%;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__submit-btn {
+    width: 100%;
+  }
+}
+</style>

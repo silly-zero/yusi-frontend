@@ -1,17 +1,17 @@
 <template>
   <Layout>
-    <div class="flex items-center justify-center min-h-[60vh]">
-      <Card class="w-full max-w-md mx-4">
-        <CardHeader class="space-y-1">
-          <CardTitle class="text-2xl font-bold text-center">登录 Yusi</CardTitle>
-          <CardDescription class="text-center">
+    <div class="login-page">
+      <Card class="login-page__card">
+        <CardHeader class="login-page__header">
+          <CardTitle class="login-page__title">登录 Yusi</CardTitle>
+          <CardDescription class="login-page__description">
             欢迎回来，继续你的灵魂叙事之旅
           </CardDescription>
         </CardHeader>
         <form @submit.prevent="handleSubmit">
-          <CardContent class="space-y-4">
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none" for="username">
+          <CardContent class="login-page__content">
+            <div class="login-page__field">
+              <label class="login-page__label" for="username">
                 用户名
               </label>
               <Input
@@ -21,8 +21,8 @@
                 :disabled="loading"
               />
             </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium leading-none" for="password">
+            <div class="login-page__field">
+              <label class="login-page__label" for="password">
                 密码
               </label>
               <Input
@@ -34,13 +34,13 @@
               />
             </div>
           </CardContent>
-          <CardFooter class="flex flex-col gap-4">
-            <Button class="w-full" type="submit" :is-loading="loading">
+          <CardFooter class="login-page__footer">
+            <Button class="login-page__submit-btn" type="submit" :is-loading="loading">
               登录
             </Button>
-            <div class="text-sm text-center text-muted-foreground">
+            <div class="login-page__register-hint">
               还没有账号？
-              <RouterLink to="/register" class="text-primary hover:underline">
+              <RouterLink to="/register" class="login-page__register-link">
                 立即注册
               </RouterLink>
             </div>
@@ -85,3 +85,79 @@ const handleSubmit = async () => {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+
+  &__card {
+    width: 100%;
+    max-width: 28rem;
+    margin: 0 $spacing-md;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    font-size: $text-2xl;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  &__description {
+    text-align: center;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__submit-btn {
+    width: 100%;
+  }
+
+  &__register-hint {
+    font-size: $text-sm;
+    text-align: center;
+    color: $muted-foreground;
+  }
+
+  &__register-link {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+</style>

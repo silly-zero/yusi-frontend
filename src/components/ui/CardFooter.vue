@@ -1,9 +1,16 @@
 <template>
-  <div :class="cn('flex items-center p-6 pt-0', $attrs.class)">
+  <div class="card-footer">
     <slot />
   </div>
 </template>
 
-<script setup lang="ts">
-import { cn } from '@/utils'
-</script>
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  padding: $spacing-lg;
+  padding-top: 0;
+}
+</style>

@@ -3,14 +3,14 @@
     <CardHeader>
       <CardTitle>写下你的叙事</CardTitle>
     </CardHeader>
-    <CardContent class="space-y-4">
+    <CardContent class="room-submit__content">
       <Textarea
         v-model="narrative"
         :rows="8"
         placeholder="描述你在该情景下会采取的行动与想法..."
         :disabled="loading"
       />
-      <div class="text-xs text-muted-foreground text-right">
+      <div class="room-submit__char-count">
         已输入 {{ charCount }} / 1000 字符
       </div>
     </CardContent>
@@ -66,3 +66,21 @@ const handleSubmit = async () => {
   }
 }
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/utils/variables' as *;
+
+.room-submit {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__char-count {
+    font-size: $text-xs;
+    color: $muted-foreground;
+    text-align: right;
+  }
+}
+</style>
